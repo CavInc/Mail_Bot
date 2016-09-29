@@ -55,6 +55,10 @@ class POST_EMAIL:
             self.mp.select()
 
             self.result,self.ids = self.mp.search(None, 'ALL')
+
+            typ, unseen = self.mp.status('INBOX', "(UNSEEN)")
+            print typ,unseen
+
             pass
 
         pass
@@ -108,6 +112,12 @@ class POST_EMAIL:
         if self.mode == POST_MODE_IMAP:
             typ, msg = self.mp.fetch(num_message, '(RFC822)')
             msg=msg[0][1]
+            mail = email.message_from_string(msg)
+            # Получаем тело письма и печаем в f_message - файл для записи сообщений
+            msg_parts = [(part.get_filename(), part.get_payload(decode=True))
+                         for part in mail.walk() if part.get_content_type() == 'text/plain']
+            for name, data in msg_parts:
+                msg = str(data)
             pass
         return msg
         pass

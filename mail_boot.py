@@ -20,7 +20,7 @@ if __name__=='__main__':
 
     if getConfig()['mail_mode']=='IMAP':
         post = POST_EMAIL(getIMAPConfig()['host'],getIMAPConfig()['user'],getIMAPConfig()['pass'],
-                          mode=POST_MODE_IMAP,ssl_mode=True)
+                          mode=POST_MODE_IMAP,ssl_mode=(getIMAPConfig()['ssl'] == 'yes'))
         #print post.getHeader()
         Work_filter(post,LoadFilter(getConfig()['filter']),filter_name=getConfig()['filter_name'])
 

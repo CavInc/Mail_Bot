@@ -1,4 +1,5 @@
 #-*- coding:utf-8 -*-
+import re
 __author__ = 'cav'
 
 '''
@@ -55,4 +56,21 @@ def __run(id,post,filter_work):
     print key_operation
     data = post.getMessage(id)
     print data
+    for key in key_operation:
+        if key.find('filter_function_')!=-1:
+            print filter_work[key]
+            if filter_work[key]=='del_hiperlink':
+                data = __del_hiperlink(data)
+                print data
+                pass
+            if filter_work[key]=='del_format':
+                pass
+            if filter_work[key]=='set_subject':
+                pass
+
+    pass
+
+# удаляем ссылки
+def __del_hiperlink(data):
+    return re.sub(r'(http?:\/\/)?([\da-z\,-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?', '', data)
     pass
