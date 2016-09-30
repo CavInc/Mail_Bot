@@ -8,6 +8,9 @@ __author__ = 'cav'
 
 no_work_num=()
 
+# стурктура для оправки
+send_post={}
+
 def Work_filter(post,filter_rec,filter_mode='single',filter_name=None):
     print filter_rec
     filter = filter_rec[filter_name]
@@ -61,6 +64,7 @@ def __run(id,post,filter_work):
             print filter_work[key]
             if filter_work[key]=='del_hiperlink':
                 data = __del_hiperlink(data)
+                send_post['body']=data
                 print data
                 pass
             if filter_work[key]=='del_format':
