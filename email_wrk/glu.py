@@ -28,6 +28,10 @@ def LoadCFG(fname):
                              'ssl':config.get('IMAP','ssl'),
                              'ssl_port':config.get('IMAP','ssl_port').lower(),
                              'pop_port':config.get('IMAP','imap_port').lower()}
+    __parameters__['SMTP'] = {'host':config.get('SMTP','host'),
+                              'user':config.get('SMTP','user'),
+                              'pass':config.get('SMTP','pass'),
+                              'ssl':config.get('SMTP','ssl')}
     '''
     print config.sections()
     for sec in config.sections():
@@ -46,6 +50,9 @@ def getIMAPConfig():
 
 def getConfig():
     return __parameters__['CONFIG']
+
+def getSMTP():
+    return  __parameters__['SMTP']
 
 
 __filters__={}

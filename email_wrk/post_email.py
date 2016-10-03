@@ -86,17 +86,21 @@ class POST_EMAIL:
                 value , charset =  decode_header(msg['Subject'])[0]
                 value = value.decode(self.mask[charset]).encode('utf-8')
                 resipient = msg['From']
-                self.head_mail[msgnum]= {'from':resipient,'subject':value}
+                to = msg['To']
+                self.head_mail[msgnum]= {'from':resipient,'subject':value,'to':to}
 
         if self.mode == POST_MODE_IMAP:
             for id in self.ids[0].split():
+                result,to =  self.mp.fetch(id,'(BODY.PEEK[HEADER.FIELDS (TO)])')
+                to = email.Header.decode_header(to[0][1].strip()[6:]).pop()
+
                 result,resipient = self.mp.fetch(id,'(BODY.PEEK[HEADER.FIELDS (FROM)])')
                 resipient = email.Header.decode_header(resipient[0][1].strip()[6:]).pop()
 
                 subject =  self.mp.fetch(id,'(BODY.PEEK[HEADER.FIELDS (SUBJECT)])')[1][0][1].strip()[9:]
                 subject = email.Header.decode_header(subject)
                 subject = subject[0][0].decode(subject[0][1]) if subject[0][1] else subject[0][0]
-                self.head_mail[id] = {'from':resipient[0],'subject': subject}
+                self.head_mail[id] = {'from':resipient[0],'subject': subject,'to':to[0]}
                 pass
         return self.head_mail
     pass
@@ -121,6 +125,12 @@ class POST_EMAIL:
             pass
         return msg
         pass
+    '''
+       возвращаем тело письма не преобразованое
+    '''
+    def getMessageSrc(self,num_message):
+        msg=''
+
 
     '''
       удаляем писмо на сервере
